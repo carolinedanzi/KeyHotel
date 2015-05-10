@@ -1,7 +1,7 @@
-What is left to code:
+﻿What is left to code:
 
     Cleaning View:        
-        1.  Update
+        1.  Update (HEATHER is working on this)
         2.  Delete
 	3.  Error checking (the final deliverable doc says “An error  message based on a 			    user database request” must be included)
 

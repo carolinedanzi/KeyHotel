@@ -464,7 +464,32 @@ public class CleaningView extends javax.swing.JFrame {
     }//GEN-LAST:event_tableMouseClicked
 
     private void updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateMouseClicked
+        String occ = ((String) model.getValueAt(table.getSelectedRow(), 4));
+        occ = occ.toLowerCase().equals("yes") ? "1": "0";
+        String updateQuery = "update cleans set essn = ?, room_no = ?, date = ?, start_time = ?, occupied = ? " 
+                + "where essn = " + ((String) model.getValueAt(table.getSelectedRow(), 0)) 
+                + " AND room_no = " + ((String) model.getValueAt(table.getSelectedRow(), 1)) 
+                + " AND date = " + ((String) model.getValueAt(table.getSelectedRow(), 2)) 
+                + " AND start_time = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
+                + " AND occupied = " + occ;
+        
+         try {
+            PreparedStatement statement = connection.prepareStatement(updateQuery);
+            statement.clearParameters();
+            statement.setString(1, updateSSN.getText());
+            statement.setString(2, updateRmNum.getText());
+            statement.setString(3, updateDate.getText());
+            statement.setString(4, updateSTime.getText());
+            statement.setString(5, updateOccupied.getText().toLowerCase().equals("yes") ? "1" : "0");
+            statement.executeUpdate();
 
+            String query = "select * from cleans";
+            statement = connection.prepareStatement(query);
+            setTableData(statement.executeQuery());
+        } catch (SQLException ex) {
+            Logger.getLogger(CleaningView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_updateMouseClicked
 
     private void setTableData(ResultSet rs) throws SQLException {
