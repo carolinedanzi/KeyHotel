@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -467,28 +468,35 @@ public class CleaningView extends javax.swing.JFrame {
         String occ = ((String) model.getValueAt(table.getSelectedRow(), 4));
         occ = occ.toLowerCase().equals("yes") ? "1": "0";
         String updateQuery = "update cleans set essn = ?, room_no = ?, date = ?, start_time = ?, occupied = ? " 
-                + "where essn = " + ((String) model.getValueAt(table.getSelectedRow(), 0)) 
-                + " AND room_no = " + ((String) model.getValueAt(table.getSelectedRow(), 1)) 
-                + " AND date = " + ((String) model.getValueAt(table.getSelectedRow(), 2)) 
-                + " AND start_time = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
-                + " AND occupied = " + occ;
+                + "where essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 0)) 
+                + "' and room_no = " + ((String) model.getValueAt(table.getSelectedRow(), 1)) 
+                + " and date = '" + ((String) model.getValueAt(table.getSelectedRow(), 2)) 
+                + "' and start_time = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
+                + " and occupied = " + occ;
         
          try {
             PreparedStatement statement = connection.prepareStatement(updateQuery);
             statement.clearParameters();
-            statement.setString(1, updateSSN.getText());
-            statement.setString(2, updateRmNum.getText());
-            statement.setString(3, updateDate.getText());
-            statement.setString(4, updateSTime.getText());
-            statement.setString(5, updateOccupied.getText().toLowerCase().equals("yes") ? "1" : "0");
+            statement.setObject(1, updateSSN.getText());
+            statement.setObject(2, updateRmNum.getText());
+            statement.setObject(3, updateDate.getText());
+            statement.setObject(4, updateSTime.getText());
+            statement.setObject(5, updateOccupied.getText().toLowerCase().equals("yes") ? "1" : "0");
             statement.executeUpdate();
-
+            
             String query = "select * from cleans";
             statement = connection.prepareStatement(query);
             setTableData(statement.executeQuery());
+            statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(CleaningView.class.getName()).log(Level.SEVERE, null, ex);
         }
+        updateSSN.setText("");
+        updateRmNum.setText("");
+        updateDate.setText("");
+        updateSTime.setText("");
+        updateOccupied.setText("");
+        
         
     }//GEN-LAST:event_updateMouseClicked
 
