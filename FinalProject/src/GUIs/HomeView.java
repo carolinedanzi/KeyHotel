@@ -151,6 +151,12 @@ public class HomeView extends javax.swing.JFrame {
 
     private void maintButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_maintButtonMouseClicked
         if (!maintView.isVisible()) {
+            try{
+                maintView.load();
+            }
+            catch (SQLException ex){
+                Logger.getLogger(HomeView.class.getName()).log(Level.SEVERE, null, ex);
+            }
             maintView.setVisible(true);
         }
     }//GEN-LAST:event_maintButtonMouseClicked

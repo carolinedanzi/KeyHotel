@@ -641,14 +641,14 @@ public class MaintView extends javax.swing.JFrame {
     
     private void updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateMouseClicked
 
-        String updateQuery = "update cleans set request_id = ?, essn = ?, rm_no = ?, uniq_item_id = ?, descr = ?, submittalDate = ?, resolutionDate = ? "
-        + "where request_id = '" + ((String) model.getValueAt(table.getSelectedRow(), 0))
-        + "' and essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 1))
+        String updateQuery = "update maint_request set request_id = ?, essn = ?, rm_no = ?, uniq_item_id = ?, descr = ?, submittalDate = ?, resolutionDate = ? "
+        + "where request_id = " + ((String) model.getValueAt(table.getSelectedRow(), 0))
+        + " and essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 1))
         + "' and rm_no = " + ((String) model.getValueAt(table.getSelectedRow(), 2))
         + " and uniq_item_id = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
         + " and descr = '" + ((String) model.getValueAt(table.getSelectedRow(), 4))
-        + " and submittalDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 5))
-        + " and resolutionDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 6)) + "'";      
+        + "' and submittalDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 5))
+        + "' and resolutionDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 6)) + "'";      
 
         try {
             PreparedStatement statement = connection.prepareStatement(updateQuery);
@@ -680,17 +680,16 @@ public class MaintView extends javax.swing.JFrame {
 
     private void deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMouseClicked
         String deleteQuery = "delete from maint_request "
-        + "where request_id = '" + ((String) model.getValueAt(table.getSelectedRow(), 0))
-        + "' and essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 1))
+         + "where request_id = " + ((String) model.getValueAt(table.getSelectedRow(), 0))
+        + " and essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 1))
         + "' and rm_no = " + ((String) model.getValueAt(table.getSelectedRow(), 2))
         + " and uniq_item_id = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
         + " and descr = '" + ((String) model.getValueAt(table.getSelectedRow(), 4))
-        + " and submittalDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 5))
-        + " and resolutionDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 6)) + "'";
+        + "' and submittalDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 5))
+        + "' and resolutionDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 6)) + "'";     
 
         try {
             PreparedStatement statement = connection.prepareStatement(deleteQuery);
-            statement.clearParameters();
             statement.executeUpdate();
 
             String query = "select * from maint_request";

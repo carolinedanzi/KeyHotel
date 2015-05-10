@@ -1,4 +1,4 @@
-What is left to code:
+﻿What is left to code:
 
     Cleaning View:        
         1.  Update (COMPLETED)
@@ -10,4 +10,4 @@ What is left to code:
         1. Sum (COMPLETE)
         
     Maintenance View:
-        1. Everything (HEATHER)
+        1. Everything (COMPLETE)
