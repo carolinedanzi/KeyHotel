@@ -14,7 +14,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.sql.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -623,7 +622,32 @@ public class CleaningView extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshMouseClicked
 
     private void deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMouseClicked
-
+        String occ = ((String) model.getValueAt(table.getSelectedRow(), 4));
+        occ = occ.toLowerCase().equals("yes") ? "1": "0";
+        String deleteQuery = "delete from cleans "
+                + "where essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 0)) 
+                + "' and room_no = " + ((String) model.getValueAt(table.getSelectedRow(), 1)) 
+                + " and date = '" + ((String) model.getValueAt(table.getSelectedRow(), 2)) 
+                + "' and start_time = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
+                + " and occupied = " + occ;
+        
+         try {
+            PreparedStatement statement = connection.prepareStatement(deleteQuery);
+            statement.clearParameters();
+            statement.executeUpdate();
+            
+            String query = "select * from cleans";
+            statement = connection.prepareStatement(query);
+            setTableData(statement.executeQuery());
+            statement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CleaningView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        updateSSN.setText("");
+        updateRmNum.setText("");
+        updateDate.setText("");
+        updateSTime.setText("");
+        updateOccupied.setText("");
     }//GEN-LAST:event_deleteMouseClicked
 
     final private DefaultTableModel model;
