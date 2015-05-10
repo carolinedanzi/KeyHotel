@@ -59,7 +59,9 @@ public class ItemView extends javax.swing.JFrame {
         }
         roomNumbers.setModel(new DefaultComboBoxModel(types.toArray()));
 
-        rs = s.executeQuery("select i.*, name from item as i, item_type where i.item_type_id = it_id");
+        rs = s.executeQuery("select (select sum(cost) from item, "
+                + "item_type where item_type_id = it_id) as sum, i.*, name from item "
+                + "as i, item_type where i.item_type_id = it_id");
         setTableData(rs);
     }
 
@@ -340,12 +342,19 @@ public class ItemView extends javax.swing.JFrame {
         int type_id = itemTypes.getSelectedIndex();
 
         if (type_id != -1) {
-            String item_query = "select i.*, name from item as i, item_type where i.item_type_id = ? and i.item_type_id = it_id";
-            String room_query = "select name from rm_type, type_has where i_type_id = ? and r_type_id = rt_id";
+            String item_query = "select (select sum(cost) from item, "
+                    + "item_type where item_type_id = ? and item_type_id = "
+                    + "it_id) as sum, i.*, name from item as i, item_type where "
+                    + "i.item_type_id = ? and i.item_type_id = it_id";
+            
+            String room_query = "select name from rm_type, type_has where "
+                    + "i_type_id = ? and r_type_id = rt_id";
             try {
                 PreparedStatement statement = connection.prepareStatement(item_query);
                 statement.clearParameters();
                 statement.setInt(1, type_id);
+                statement.setInt(2, type_id);
+
                 setTableData(statement.executeQuery());
                 
                 statement = connection.prepareStatement(room_query);
@@ -362,12 +371,18 @@ public class ItemView extends javax.swing.JFrame {
         int type_id = roomTypes.getSelectedIndex();
 
         if (type_id != -1) {
-            String itemQuery = "select i.*, name from item as i, type_has, item_type where r_type_id = ? and i_type_id = i.item_type_id and i.item_type_id = it_id";
+            String itemQuery = "select (select sum(cost) from item, "
+                    + "type_has, item_type where r_type_id = ? and i_type_id = "
+                    + "item_type_id and item_type_id = it_id) as sum, i.*, name "
+                    + "from item as i, type_has, item_type where r_type_id = ? "
+                    + "and i_type_id = i.item_type_id and i.item_type_id = it_id";
+            
             String roomQuery = "select name from item_type, type_has where r_type_id = ? and i_type_id = it_id";
             try {
                 PreparedStatement statement = connection.prepareStatement(itemQuery);
                 statement.clearParameters();
                 statement.setInt(1, type_id);
+                statement.setInt(2, type_id);
                 setTableData(statement.executeQuery());
                 
                 statement = connection.prepareStatement(roomQuery);
@@ -381,13 +396,18 @@ public class ItemView extends javax.swing.JFrame {
 
     private void selectRmNumMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectRmNumMouseClicked
         String rm_num = (String) roomNumbers.getSelectedItem();
-        String itemQuery = "select i.*, name from item as i, item_type where i.room_no = ? and i.item_type_id = it_id";
+        String itemQuery = "select (select sum(cost) from item, "
+                + "item_type where room_no = ? and item_type_id = it_id) as sum, "
+                + "i.*, name from item as i, item_type where i.room_no = ? and "
+                + "i.item_type_id = it_id";
+        
         String roomQuery = "select name from item_type, room, type_has where rm_num = ? and rm_type_id = r_type_id and it_id = i_type_id";
         
         try {
             PreparedStatement statement = connection.prepareStatement(itemQuery);
             statement.clearParameters();
             statement.setString(1, rm_num);
+            statement.setString(2, rm_num);
             setTableData(statement.executeQuery());
             
             statement = connection.prepareStatement(roomQuery);
@@ -419,12 +439,21 @@ public class ItemView extends javax.swing.JFrame {
     private void setTableData(ResultSet rs) throws SQLException {
         
         model.setRowCount(0);
+        double sum = 0;
         while (rs.next()) {
-            String[] tuple = {rs.getString("unique_item_id"), rs.getString("name"),
-                rs.getString("cost"), rs.getString("room_no")};
+            if (rs.isFirst()) {
+                sum = rs.getDouble("sum");
+            }
+            String[] tuple = {
+                rs.getString("unique_item_id"), 
+                rs.getString("name"),
+                rs.getString("cost"), 
+                rs.getString("room_no")
+            };
             model.addRow(tuple);
         }
         count.setText(Integer.toString(model.getRowCount()));
+        cost.setText(Double.toString(sum));
     }
 
     final private DefaultTableModel model;
