@@ -1,0 +1,12 @@
+What is left to code:
+
+    Cleaning View:        
+        1.  Update
+        2.  Delete
+	3.  Error checking (the final deliverable doc says “An error  message based on a 			    user database request” must be included)
+
+    Item View:
+        1. Sum
+        
+    Maintenance View:
+        1. Everything (copy and paste)
