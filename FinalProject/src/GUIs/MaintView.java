@@ -293,6 +293,11 @@ public class MaintView extends javax.swing.JFrame {
                 scheduleMouseClicked(evt);
             }
         });
+        schedule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                scheduleActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("SSN");
 
@@ -565,6 +570,10 @@ public class MaintView extends javax.swing.JFrame {
         try {
             PreparedStatement statement = connection.prepareStatement(insertQuery);
             statement.clearParameters();
+                        if(Integer.getInteger(insertSSN.getText())>0&&Integer.getInteger(insertSSN.getText())<1000000000&&      //checks to see if it is a valid ssn
+                    Integer.getInteger(insertRmNum.getText())>0&&Integer.getInteger(insertRmNum.getText())<11000&&              //checks to see if it is a valid room
+                    Integer.getInteger(insertRequestID.getText())>0&&Integer.getInteger(insertRequestID.getText())<100000&&     //checks to see if it is a valid request id from 1-999999
+                    Integer.getInteger(insertItemID.getText())>0 && Integer.getInteger(insertItemID.getText())<10000){          //checks to see if it is a valid itemid from 1-9999
             statement.setObject(1, insertRequestID.getText());
             statement.setObject(2, insertSSN.getText());
             statement.setObject(3, insertRmNum.getText());
@@ -574,6 +583,9 @@ public class MaintView extends javax.swing.JFrame {
             statement.setObject(7, insertResDate.getText());
            
             statement.executeUpdate();
+                        }else{
+                            //jpane error
+                        }
 
             String query = "select * from maint_request";
             statement = connection.prepareStatement(query);
@@ -653,6 +665,10 @@ public class MaintView extends javax.swing.JFrame {
         try {
             PreparedStatement statement = connection.prepareStatement(updateQuery);
             statement.clearParameters();
+                           if(Integer.getInteger(updateSSN.getText())>0&&Integer.getInteger(updateSSN.getText())<1000000000&&      //checks to see if it is a valid ssn
+                    Integer.getInteger(updateRmNum.getText())>0&&Integer.getInteger(updateRmNum.getText())<11000&&              //checks to see if it is a valid room
+                    Integer.getInteger(updateRequestID.getText())>0&&Integer.getInteger(updateRequestID.getText())<100000&&     //checks to see if it is a valid request id from 1-999999
+                    Integer.getInteger(updateItemID.getText())>0 && Integer.getInteger(updateItemID.getText())<10000){          //checks to see if it is a valid itemid from 1-9999
             statement.setObject(1, updateRequestID.getText());
             statement.setObject(2, updateSSN.getText());
             statement.setObject(3, updateRmNum.getText());
@@ -661,6 +677,10 @@ public class MaintView extends javax.swing.JFrame {
             statement.setObject(6, updateSubDate.getText());
             statement.setObject(7, updateResDate.getText());
             statement.executeUpdate();
+                        }else{
+                            //error pane
+                        }
+                            
 
             String query = "select * from maint_request";
             statement = connection.prepareStatement(query);
@@ -839,6 +859,10 @@ public class MaintView extends javax.swing.JFrame {
     private void searchSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSortActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchSortActionPerformed
+
+    private void scheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scheduleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_scheduleActionPerformed
 
     
 

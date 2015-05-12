@@ -329,6 +329,11 @@ public class CleaningView extends javax.swing.JFrame {
                 updateMouseClicked(evt);
             }
         });
+        update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateActionPerformed(evt);
+            }
+        });
 
         jLabel19.setText("Start Time");
 
@@ -435,13 +440,17 @@ public class CleaningView extends javax.swing.JFrame {
         try {
             PreparedStatement statement = connection.prepareStatement(insertQuery);
             statement.clearParameters();
+            if(Integer.getInteger(insertSSN.getText())>0&&Integer.getInteger(insertSSN.getText())<1000000000&&    //checks to see if it is a valid ssn
+                    Integer.getInteger(insertRmNum.getText())>0&&Integer.getInteger(insertRmNum.getText())<11000){    //checks to see if it is in a valid room number
             statement.setObject(1, insertSSN.getText());
             statement.setObject(2, insertRmNum.getText());
             statement.setObject(3, insertDate.getText());
             statement.setObject(4, insertSTime.getText());
             statement.setObject(5, insertOccupied.getText().toLowerCase().equals("yes") ? "1" : "0");
             statement.executeUpdate();
-
+            }else{
+                //put a joption pane here
+            }
             String query = "select * from cleans";
             statement = connection.prepareStatement(query);
             setTableData(statement.executeQuery());
@@ -476,13 +485,17 @@ public class CleaningView extends javax.swing.JFrame {
          try {
             PreparedStatement statement = connection.prepareStatement(updateQuery);
             statement.clearParameters();
+            if(Integer.getInteger(insertSSN.getText())>0&&Integer.getInteger(insertSSN.getText())<1000000000&&    //checks to see if it is a valid ssn
+                Integer.getInteger(insertRmNum.getText())>0&&Integer.getInteger(insertRmNum.getText())<11000){
             statement.setObject(1, updateSSN.getText());
             statement.setObject(2, updateRmNum.getText());
             statement.setObject(3, updateDate.getText());
             statement.setObject(4, updateSTime.getText());
             statement.setObject(5, updateOccupied.getText().toLowerCase().equals("yes") ? "1" : "0");
             statement.executeUpdate();
-            
+                        }else{
+                //insert error pane here
+            }
             String query = "select * from cleans";
             statement = connection.prepareStatement(query);
             setTableData(statement.executeQuery());
@@ -649,6 +662,10 @@ public class CleaningView extends javax.swing.JFrame {
         updateSTime.setText("");
         updateOccupied.setText("");
     }//GEN-LAST:event_deleteMouseClicked
+
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateActionPerformed
 
     final private DefaultTableModel model;
     final private Connection connection;
