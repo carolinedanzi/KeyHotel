@@ -441,8 +441,8 @@ public class CleaningView extends javax.swing.JFrame {
         try {
             PreparedStatement statement = connection.prepareStatement(insertQuery);
             statement.clearParameters();
-            if (Integer.getInteger(insertSSN.getText()) > 0 && Integer.getInteger(insertSSN.getText()) < 1000000000 && //checks to see if it is a valid ssn
-                    Integer.getInteger(insertRmNum.getText()) > 0 && Integer.getInteger(insertRmNum.getText()) < 11000) {    //checks to see if it is in a valid room number
+            if (Integer.parseInt(insertSSN.getText()) > 0 && Integer.parseInt(insertSSN.getText()) < 1000000000 && //checks to see if it is a valid ssn
+                    Integer.parseInt(insertRmNum.getText()) > 0 && Integer.parseInt(insertRmNum.getText()) < 11000) {    //checks to see if it is in a valid room number
                 statement.setObject(1, insertSSN.getText());
                 statement.setObject(2, insertRmNum.getText());
                 statement.setObject(3, insertDate.getText());
@@ -487,8 +487,8 @@ public class CleaningView extends javax.swing.JFrame {
             try {
                 PreparedStatement statement = connection.prepareStatement(updateQuery);
                 statement.clearParameters();
-                if (Integer.getInteger(insertSSN.getText()) > 0 && Integer.getInteger(insertSSN.getText()) < 1000000000 && //checks to see if it is a valid ssn
-                        Integer.getInteger(insertRmNum.getText()) > 0 && Integer.getInteger(insertRmNum.getText()) < 11000) {
+                if (Integer.parseInt(insertSSN.getText()) > 0 && Integer.parseInt(insertSSN.getText()) < 1000000000 && //checks to see if it is a valid ssn
+                        Integer.parseInt(insertRmNum.getText()) > 0 && Integer.parseInt(insertRmNum.getText()) < 11000) {
                     statement.setObject(1, updateSSN.getText());
                     statement.setObject(2, updateRmNum.getText());
                     statement.setObject(3, updateDate.getText());
