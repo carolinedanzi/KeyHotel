@@ -441,15 +441,15 @@ public class CleaningView extends javax.swing.JFrame {
         try {
             PreparedStatement statement = connection.prepareStatement(insertQuery);
             statement.clearParameters();
-            if(Integer.getInteger(insertSSN.getText())>0&&Integer.getInteger(insertSSN.getText())<1000000000&&    //checks to see if it is a valid ssn
-                    Integer.getInteger(insertRmNum.getText())>0&&Integer.getInteger(insertRmNum.getText())<11000){    //checks to see if it is in a valid room number
-            statement.setObject(1, insertSSN.getText());
-            statement.setObject(2, insertRmNum.getText());
-            statement.setObject(3, insertDate.getText());
-            statement.setObject(4, insertSTime.getText());
-            statement.setObject(5, insertOccupied.getText().toLowerCase().equals("yes") ? "1" : "0");
-            statement.executeUpdate();
-            }else{
+            if (Integer.getInteger(insertSSN.getText()) > 0 && Integer.getInteger(insertSSN.getText()) < 1000000000 && //checks to see if it is a valid ssn
+                    Integer.getInteger(insertRmNum.getText()) > 0 && Integer.getInteger(insertRmNum.getText()) < 11000) {    //checks to see if it is in a valid room number
+                statement.setObject(1, insertSSN.getText());
+                statement.setObject(2, insertRmNum.getText());
+                statement.setObject(3, insertDate.getText());
+                statement.setObject(4, insertSTime.getText());
+                statement.setObject(5, insertOccupied.getText().toLowerCase().equals("yes") ? "1" : "0");
+                statement.executeUpdate();
+            } else {
                 JOptionPane.showMessageDialog(null, "There is an error in the most recent scheduling request.");
             }
             String query = "select * from cleans";
@@ -474,43 +474,43 @@ public class CleaningView extends javax.swing.JFrame {
     }//GEN-LAST:event_tableMouseClicked
 
     private void updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateMouseClicked
-        String occ = ((String) model.getValueAt(table.getSelectedRow(), 4));
-        occ = occ.toLowerCase().equals("yes") ? "1": "0";
-        String updateQuery = "update cleans set essn = ?, room_no = ?, date = ?, start_time = ?, occupied = ? " 
-                + "where essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 0)) 
-                + "' and room_no = " + ((String) model.getValueAt(table.getSelectedRow(), 1)) 
-                + " and date = '" + ((String) model.getValueAt(table.getSelectedRow(), 2)) 
-                + "' and start_time = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
-                + " and occupied = " + occ;
-        
-         try {
-            PreparedStatement statement = connection.prepareStatement(updateQuery);
-            statement.clearParameters();
-            if(Integer.getInteger(insertSSN.getText())>0&&Integer.getInteger(insertSSN.getText())<1000000000&&    //checks to see if it is a valid ssn
-                Integer.getInteger(insertRmNum.getText())>0&&Integer.getInteger(insertRmNum.getText())<11000){
-            statement.setObject(1, updateSSN.getText());
-            statement.setObject(2, updateRmNum.getText());
-            statement.setObject(3, updateDate.getText());
-            statement.setObject(4, updateSTime.getText());
-            statement.setObject(5, updateOccupied.getText().toLowerCase().equals("yes") ? "1" : "0");
-            statement.executeUpdate();
-                        }else{
-                            JOptionPane.showMessageDialog(null, "There is an error in the most recent scheduling request.");
-                        }
-            String query = "select * from cleans";
-            statement = connection.prepareStatement(query);
-            setTableData(statement.executeQuery());
-            statement.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(CleaningView.class.getName()).log(Level.SEVERE, null, ex);
+        if (table.getSelectedRow() >= 0) {
+            String occ = ((String) model.getValueAt(table.getSelectedRow(), 4));
+            occ = occ.toLowerCase().equals("yes") ? "1" : "0";
+            String updateQuery = "update cleans set essn = ?, room_no = ?, date = ?, start_time = ?, occupied = ? "
+                    + "where essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 0))
+                    + "' and room_no = " + ((String) model.getValueAt(table.getSelectedRow(), 1))
+                    + " and date = '" + ((String) model.getValueAt(table.getSelectedRow(), 2))
+                    + "' and start_time = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
+                    + " and occupied = " + occ;
+
+            try {
+                PreparedStatement statement = connection.prepareStatement(updateQuery);
+                statement.clearParameters();
+                if (Integer.getInteger(insertSSN.getText()) > 0 && Integer.getInteger(insertSSN.getText()) < 1000000000 && //checks to see if it is a valid ssn
+                        Integer.getInteger(insertRmNum.getText()) > 0 && Integer.getInteger(insertRmNum.getText()) < 11000) {
+                    statement.setObject(1, updateSSN.getText());
+                    statement.setObject(2, updateRmNum.getText());
+                    statement.setObject(3, updateDate.getText());
+                    statement.setObject(4, updateSTime.getText());
+                    statement.setObject(5, updateOccupied.getText().toLowerCase().equals("yes") ? "1" : "0");
+                    statement.executeUpdate();
+                } else {
+                    JOptionPane.showMessageDialog(null, "There is an error in the most recent scheduling request.");
+                }
+                String query = "select * from cleans";
+                statement = connection.prepareStatement(query);
+                setTableData(statement.executeQuery());
+                statement.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CleaningView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            updateSSN.setText("");
+            updateRmNum.setText("");
+            updateDate.setText("");
+            updateSTime.setText("");
+            updateOccupied.setText("");
         }
-        updateSSN.setText("");
-        updateRmNum.setText("");
-        updateDate.setText("");
-        updateSTime.setText("");
-        updateOccupied.setText("");
-        
-        
     }//GEN-LAST:event_updateMouseClicked
 
     private void setTableData(ResultSet rs) throws SQLException {
@@ -636,32 +636,34 @@ public class CleaningView extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshMouseClicked
 
     private void deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMouseClicked
-        String occ = ((String) model.getValueAt(table.getSelectedRow(), 4));
-        occ = occ.toLowerCase().equals("yes") ? "1": "0";
-        String deleteQuery = "delete from cleans "
-                + "where essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 0)) 
-                + "' and room_no = " + ((String) model.getValueAt(table.getSelectedRow(), 1)) 
-                + " and date = '" + ((String) model.getValueAt(table.getSelectedRow(), 2)) 
-                + "' and start_time = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
-                + " and occupied = " + occ;
-        
-         try {
-            PreparedStatement statement = connection.prepareStatement(deleteQuery);
-            statement.clearParameters();
-            statement.executeUpdate();
-            
-            String query = "select * from cleans";
-            statement = connection.prepareStatement(query);
-            setTableData(statement.executeQuery());
-            statement.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(CleaningView.class.getName()).log(Level.SEVERE, null, ex);
+        if (table.getSelectedRow() >= 0) {
+            String occ = ((String) model.getValueAt(table.getSelectedRow(), 4));
+            occ = occ.toLowerCase().equals("yes") ? "1" : "0";
+            String deleteQuery = "delete from cleans "
+                    + "where essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 0))
+                    + "' and room_no = " + ((String) model.getValueAt(table.getSelectedRow(), 1))
+                    + " and date = '" + ((String) model.getValueAt(table.getSelectedRow(), 2))
+                    + "' and start_time = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
+                    + " and occupied = " + occ;
+
+            try {
+                PreparedStatement statement = connection.prepareStatement(deleteQuery);
+                statement.clearParameters();
+                statement.executeUpdate();
+
+                String query = "select * from cleans";
+                statement = connection.prepareStatement(query);
+                setTableData(statement.executeQuery());
+                statement.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CleaningView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            updateSSN.setText("");
+            updateRmNum.setText("");
+            updateDate.setText("");
+            updateSTime.setText("");
+            updateOccupied.setText("");
         }
-        updateSSN.setText("");
-        updateRmNum.setText("");
-        updateDate.setText("");
-        updateSTime.setText("");
-        updateOccupied.setText("");
     }//GEN-LAST:event_deleteMouseClicked
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed

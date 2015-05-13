@@ -19,8 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Tyler
- * Heather has edited code - copied and changed code from 
+ * @author Tyler Heather has edited code - copied and changed code from
  * cleaningView...
  */
 public class MaintView extends javax.swing.JFrame {
@@ -34,11 +33,11 @@ public class MaintView extends javax.swing.JFrame {
         Class.forName("org.sqlite.JDBC");
         connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db");
     }
-    
-    public void load() throws SQLException{
+
+    public void load() throws SQLException {
         Statement statement = connection.createStatement();
         setTableData(statement.executeQuery("select * from maint_request order by request_id DESC"));
-    }  
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -565,28 +564,28 @@ public class MaintView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void scheduleMouseClicked(java.awt.event.MouseEvent evt) {                                      
+    private void scheduleMouseClicked(java.awt.event.MouseEvent evt) {
         String insertQuery = "insert into maint_request(request_id, essn, rm_no, uniq_item_id, "
                 + "descr, submittalDate, resolutionDate) values (?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = connection.prepareStatement(insertQuery);
             statement.clearParameters();
-                        if(Integer.getInteger(insertSSN.getText())>0&&Integer.getInteger(insertSSN.getText())<1000000000&&      //checks to see if it is a valid ssn
-                    Integer.getInteger(insertRmNum.getText())>0&&Integer.getInteger(insertRmNum.getText())<11000&&              //checks to see if it is a valid room
-                    Integer.getInteger(insertRequestID.getText())>0&&Integer.getInteger(insertRequestID.getText())<100000&&     //checks to see if it is a valid request id from 1-999999
-                    Integer.getInteger(insertItemID.getText())>0 && Integer.getInteger(insertItemID.getText())<10000){          //checks to see if it is a valid itemid from 1-9999
-            statement.setObject(1, insertRequestID.getText());
-            statement.setObject(2, insertSSN.getText());
-            statement.setObject(3, insertRmNum.getText());
-            statement.setObject(4, insertItemID.getText());
-            statement.setObject(5, insertDescr.getText());
-            statement.setObject(6, insertSubDate.getText());
-            statement.setObject(7, insertResDate.getText());
-           
-            statement.executeUpdate();
-                        }else{
-                            JOptionPane.showMessageDialog(null, "There is an error in the most recent scheduling request.");
-                        }
+            if (Integer.getInteger(insertSSN.getText()) > 0 && Integer.getInteger(insertSSN.getText()) < 1000000000 && //checks to see if it is a valid ssn
+                    Integer.getInteger(insertRmNum.getText()) > 0 && Integer.getInteger(insertRmNum.getText()) < 11000 && //checks to see if it is a valid room
+                    Integer.getInteger(insertRequestID.getText()) > 0 && Integer.getInteger(insertRequestID.getText()) < 100000 && //checks to see if it is a valid request id from 1-999999
+                    Integer.getInteger(insertItemID.getText()) > 0 && Integer.getInteger(insertItemID.getText()) < 10000) {          //checks to see if it is a valid itemid from 1-9999
+                statement.setObject(1, insertRequestID.getText());
+                statement.setObject(2, insertSSN.getText());
+                statement.setObject(3, insertRmNum.getText());
+                statement.setObject(4, insertItemID.getText());
+                statement.setObject(5, insertDescr.getText());
+                statement.setObject(6, insertSubDate.getText());
+                statement.setObject(7, insertResDate.getText());
+
+                statement.executeUpdate();
+            } else {
+                JOptionPane.showMessageDialog(null, "There is an error in the most recent scheduling request.");
+            }
 
             String query = "select * from maint_request";
             statement = connection.prepareStatement(query);
@@ -602,7 +601,7 @@ public class MaintView extends javax.swing.JFrame {
         insertSubDate.setText("");
         insertResDate.setText("");
     }
-    
+
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
         updateRequestID.setText((String) model.getValueAt(table.getSelectedRow(), 0));
         updateSSN.setText((String) model.getValueAt(table.getSelectedRow(), 1));
@@ -621,7 +620,7 @@ public class MaintView extends javax.swing.JFrame {
         String descr = searchDescr.getText();
         String subDate = searchSubDate.getText();
         String resDate = searchResDate.getText();
-        
+
         ArrayList<String> params = new ArrayList<>();
         String query = generateMaintSearchQuery(params, requestID, ssn, num, itemID, descr, subDate, resDate);
         try {
@@ -635,7 +634,7 @@ public class MaintView extends javax.swing.JFrame {
 
         } catch (SQLException ex) {
             Logger.getLogger(CleaningView.class
-                .getName()).log(Level.SEVERE, null, ex);
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         searchRequestID.setText("");
         searchSSN.setText("");
@@ -646,94 +645,97 @@ public class MaintView extends javax.swing.JFrame {
         searchSubDate.setText("");
     }//GEN-LAST:event_refreshMouseClicked
 
-    /**It wouldn't let me delete... 
+    /**
+     * It wouldn't let me delete...
     private void scheduleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduleMouseClicked
 
     }//GEN-LAST:event_scheduleMouseClicked
-**/
-    
+*
+     */
+
     private void updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateMouseClicked
+        if (table.getSelectedRow() >= 0) {
+            String updateQuery = "update maint_request set request_id = ?, essn = ?, rm_no = ?, uniq_item_id = ?, descr = ?, submittalDate = ?, resolutionDate = ? "
+                    + "where request_id = " + ((String) model.getValueAt(table.getSelectedRow(), 0))
+                    + " and essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 1))
+                    + "' and rm_no = " + ((String) model.getValueAt(table.getSelectedRow(), 2))
+                    + " and uniq_item_id = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
+                    + " and descr = '" + ((String) model.getValueAt(table.getSelectedRow(), 4))
+                    + "' and submittalDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 5))
+                    + "' and resolutionDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 6)) + "'";
 
-        String updateQuery = "update maint_request set request_id = ?, essn = ?, rm_no = ?, uniq_item_id = ?, descr = ?, submittalDate = ?, resolutionDate = ? "
-        + "where request_id = " + ((String) model.getValueAt(table.getSelectedRow(), 0))
-        + " and essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 1))
-        + "' and rm_no = " + ((String) model.getValueAt(table.getSelectedRow(), 2))
-        + " and uniq_item_id = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
-        + " and descr = '" + ((String) model.getValueAt(table.getSelectedRow(), 4))
-        + "' and submittalDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 5))
-        + "' and resolutionDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 6)) + "'";      
+            try {
+                PreparedStatement statement = connection.prepareStatement(updateQuery);
+                statement.clearParameters();
+                if (Integer.getInteger(updateSSN.getText()) > 0 && Integer.getInteger(updateSSN.getText()) < 1000000000 && //checks to see if it is a valid ssn
+                        Integer.getInteger(updateRmNum.getText()) > 0 && Integer.getInteger(updateRmNum.getText()) < 11000 && //checks to see if it is a valid room
+                        Integer.getInteger(updateRequestID.getText()) > 0 && Integer.getInteger(updateRequestID.getText()) < 100000 && //checks to see if it is a valid request id from 1-999999
+                        Integer.getInteger(updateItemID.getText()) > 0 && Integer.getInteger(updateItemID.getText()) < 10000) {          //checks to see if it is a valid itemid from 1-9999
+                    statement.setObject(1, updateRequestID.getText());
+                    statement.setObject(2, updateSSN.getText());
+                    statement.setObject(3, updateRmNum.getText());
+                    statement.setObject(4, updateItemID.getText());
+                    statement.setObject(5, updateDescr.getText());
+                    statement.setObject(6, updateSubDate.getText());
+                    statement.setObject(7, updateResDate.getText());
+                    statement.executeUpdate();
+                } else {
+                    JOptionPane.showMessageDialog(null, "There is an error in the most recent update request.");
 
-        try {
-            PreparedStatement statement = connection.prepareStatement(updateQuery);
-            statement.clearParameters();
-                           if(Integer.getInteger(updateSSN.getText())>0&&Integer.getInteger(updateSSN.getText())<1000000000&&      //checks to see if it is a valid ssn
-                    Integer.getInteger(updateRmNum.getText())>0&&Integer.getInteger(updateRmNum.getText())<11000&&              //checks to see if it is a valid room
-                    Integer.getInteger(updateRequestID.getText())>0&&Integer.getInteger(updateRequestID.getText())<100000&&     //checks to see if it is a valid request id from 1-999999
-                    Integer.getInteger(updateItemID.getText())>0 && Integer.getInteger(updateItemID.getText())<10000){          //checks to see if it is a valid itemid from 1-9999
-            statement.setObject(1, updateRequestID.getText());
-            statement.setObject(2, updateSSN.getText());
-            statement.setObject(3, updateRmNum.getText());
-            statement.setObject(4, updateItemID.getText());
-            statement.setObject(5, updateDescr.getText());
-            statement.setObject(6, updateSubDate.getText());
-            statement.setObject(7, updateResDate.getText());
-            statement.executeUpdate();
-                        }else{
-                            JOptionPane.showMessageDialog(null, "There is an error in the most recent update request.");
+                }
 
-                        }
-                            
-
-            String query = "select * from maint_request";
-            statement = connection.prepareStatement(query);
-            setTableData(statement.executeQuery());
-            statement.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(CleaningView.class.getName()).log(Level.SEVERE, null, ex);
+                String query = "select * from maint_request";
+                statement = connection.prepareStatement(query);
+                setTableData(statement.executeQuery());
+                statement.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CleaningView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            updateRequestID.setText("");
+            updateSSN.setText("");
+            updateRmNum.setText("");
+            updateItemID.setText("");
+            updateDescr.setText("");
+            updateSubDate.setText("");
+            updateResDate.setText("");
         }
-        updateRequestID.setText("");
-        updateSSN.setText("");
-        updateRmNum.setText("");
-        updateItemID.setText("");
-        updateDescr.setText("");
-        updateSubDate.setText("");
-        updateResDate.setText("");
     }//GEN-LAST:event_updateMouseClicked
 
     private void deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMouseClicked
-        String deleteQuery = "delete from maint_request "
-         + "where request_id = " + ((String) model.getValueAt(table.getSelectedRow(), 0))
-        + " and essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 1))
-        + "' and rm_no = " + ((String) model.getValueAt(table.getSelectedRow(), 2))
-        + " and uniq_item_id = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
-        + " and descr = '" + ((String) model.getValueAt(table.getSelectedRow(), 4))
-        + "' and submittalDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 5))
-        + "' and resolutionDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 6)) + "'";     
+        if (table.getSelectedRow() >= 0) {
+            String deleteQuery = "delete from maint_request "
+                    + "where request_id = " + ((String) model.getValueAt(table.getSelectedRow(), 0))
+                    + " and essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 1))
+                    + "' and rm_no = " + ((String) model.getValueAt(table.getSelectedRow(), 2))
+                    + " and uniq_item_id = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
+                    + " and descr = '" + ((String) model.getValueAt(table.getSelectedRow(), 4))
+                    + "' and submittalDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 5))
+                    + "' and resolutionDate = '" + ((String) model.getValueAt(table.getSelectedRow(), 6)) + "'";
 
-        try {
-            PreparedStatement statement = connection.prepareStatement(deleteQuery);
-            statement.executeUpdate();
+            try {
+                PreparedStatement statement = connection.prepareStatement(deleteQuery);
+                statement.executeUpdate();
 
-            String query = "select * from maint_request";
-            statement = connection.prepareStatement(query);
-            setTableData(statement.executeQuery());
-            statement.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(CleaningView.class.getName()).log(Level.SEVERE, null, ex);
+                String query = "select * from maint_request";
+                statement = connection.prepareStatement(query);
+                setTableData(statement.executeQuery());
+                statement.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CleaningView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            updateRequestID.setText("");
+            updateSSN.setText("");
+            updateRmNum.setText("");
+            updateItemID.setText("");
+            updateDescr.setText("");
+            updateSubDate.setText("");
+            updateResDate.setText("");
         }
-        updateRequestID.setText("");
-        updateSSN.setText("");
-        updateRmNum.setText("");
-        updateItemID.setText("");
-        updateDescr.setText("");
-        updateSubDate.setText("");
-        updateResDate.setText("");
     }//GEN-LAST:event_deleteMouseClicked
 
     final private DefaultTableModel model;
     final private Connection connection;
-    
-    
+
     private void setTableData(ResultSet rs) throws SQLException {
         model.setRowCount(0);
         while (rs.next()) {
@@ -769,7 +771,7 @@ public class MaintView extends javax.swing.JFrame {
                 return "rm_no ASC";
             case 8:
                 return "uniq_item_id DESC";
-            case 9: 
+            case 9:
                 return "uniq_item_id ASC";
             case 10:
                 return "resolutionDate DESC";
@@ -780,12 +782,12 @@ public class MaintView extends javax.swing.JFrame {
         }
     }
 
-    private String generateMaintSearchQuery(ArrayList<String> params, String requestID, 
+    private String generateMaintSearchQuery(ArrayList<String> params, String requestID,
             String ssn, String num, String itemID, String descr, String subDate, String resDate) {
         ArrayList<String> clauses = new ArrayList<>();
 
         String query = "select m.* from maint_request as m";
-        if (!requestID.equals("")){
+        if (!requestID.equals("")) {
             clauses.add("request_id = ?");
             params.add(requestID);
         }
@@ -797,19 +799,19 @@ public class MaintView extends javax.swing.JFrame {
             clauses.add("rm_no = ?");
             params.add(num);
         }
-        if(!itemID.equals("")){
+        if (!itemID.equals("")) {
             clauses.add("uniq_item_id = ?");
             params.add(itemID);
         }
-        if(!descr.equals("")){
+        if (!descr.equals("")) {
             clauses.add("descr = ?");
             params.add(descr);
         }
-        if(!subDate.equals("")){
+        if (!subDate.equals("")) {
             clauses.add("submittalDate = ?");
             params.add(subDate);
         }
-        if(!resDate.equals("")){
+        if (!resDate.equals("")) {
             clauses.add("resolutionDate = ?");
             params.add(resDate);
         }
@@ -819,9 +821,8 @@ public class MaintView extends javax.swing.JFrame {
         query += " order by " + getOrder();
         return query;
     }
-    
-    
-    
+
+
     private void searchRequestIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchRequestIDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchRequestIDActionPerformed
@@ -866,7 +867,6 @@ public class MaintView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_scheduleActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton delete;
