@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -584,7 +585,7 @@ public class MaintView extends javax.swing.JFrame {
            
             statement.executeUpdate();
                         }else{
-                            //jpane error
+                            JOptionPane.showMessageDialog(null, "There is an error in the most recent scheduling request.");
                         }
 
             String query = "select * from maint_request";
@@ -678,7 +679,8 @@ public class MaintView extends javax.swing.JFrame {
             statement.setObject(7, updateResDate.getText());
             statement.executeUpdate();
                         }else{
-                            //error pane
+                            JOptionPane.showMessageDialog(null, "There is an error in the most recent update request.");
+
                         }
                             
 

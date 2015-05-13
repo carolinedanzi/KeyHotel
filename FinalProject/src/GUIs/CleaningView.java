@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -449,7 +450,7 @@ public class CleaningView extends javax.swing.JFrame {
             statement.setObject(5, insertOccupied.getText().toLowerCase().equals("yes") ? "1" : "0");
             statement.executeUpdate();
             }else{
-                //put a joption pane here
+                JOptionPane.showMessageDialog(null, "There is an error in the most recent scheduling request.");
             }
             String query = "select * from cleans";
             statement = connection.prepareStatement(query);
@@ -494,8 +495,8 @@ public class CleaningView extends javax.swing.JFrame {
             statement.setObject(5, updateOccupied.getText().toLowerCase().equals("yes") ? "1" : "0");
             statement.executeUpdate();
                         }else{
-                //insert error pane here
-            }
+                            JOptionPane.showMessageDialog(null, "There is an error in the most recent scheduling request.");
+                        }
             String query = "select * from cleans";
             statement = connection.prepareStatement(query);
             setTableData(statement.executeQuery());

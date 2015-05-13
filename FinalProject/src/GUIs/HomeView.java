@@ -54,6 +54,11 @@ public class HomeView extends javax.swing.JFrame {
                 cleaningButtonMouseClicked(evt);
             }
         });
+        cleaningButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cleaningButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -160,6 +165,10 @@ public class HomeView extends javax.swing.JFrame {
             maintView.setVisible(true);
         }
     }//GEN-LAST:event_maintButtonMouseClicked
+
+    private void cleaningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cleaningButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cleaningButtonActionPerformed
 
     /**
      * @param args the command line arguments
