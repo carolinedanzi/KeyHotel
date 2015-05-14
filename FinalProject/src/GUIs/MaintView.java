@@ -567,13 +567,13 @@ public class MaintView extends javax.swing.JFrame {
                         && !updateRmNum.getText().isEmpty()
                         && !updateRequestID.getText().isEmpty()
                         && !updateItemID.getText().isEmpty()
-                        && Integer.parseInt(updateSSN.getText()) > 0 
+                        && Integer.parseInt(updateSSN.getText()) > 0
                         && Integer.parseInt(updateSSN.getText()) < 1000000000 //checks to see if it is a valid ssn
-                        && Integer.parseInt(updateRmNum.getText()) > 0 
+                        && Integer.parseInt(updateRmNum.getText()) > 0
                         && Integer.parseInt(updateRmNum.getText()) < 11000 //checks to see if it is a valid room
-                        && Integer.parseInt(updateRequestID.getText()) > 0 
+                        && Integer.parseInt(updateRequestID.getText()) > 0
                         && Integer.parseInt(updateRequestID.getText()) < 100000 //checks to see if it is a valid request id from 1-999999
-                        && Integer.parseInt(updateItemID.getText()) > 0 
+                        && Integer.parseInt(updateItemID.getText()) > 0
                         && Integer.parseInt(updateItemID.getText()) < 10000) {          //checks to see if it is a valid itemid from 1-9999
                     statement.setObject(1, updateRequestID.getText());
                     statement.setObject(2, updateSSN.getText());
@@ -634,7 +634,7 @@ public class MaintView extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteMouseClicked
 
     private void scheduleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduleMouseClicked
-String insertQuery = "insert into maint_request(request_id, essn, rm_no, uniq_item_id, "
+        String insertQuery = "insert into maint_request(request_id, essn, rm_no, uniq_item_id, "
                 + "descr, submittalDate, resolutionDate) values (?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = connection.prepareStatement(insertQuery);
@@ -767,7 +767,6 @@ String insertQuery = "insert into maint_request(request_id, essn, rm_no, uniq_it
         query += " order by " + getOrder();
         return query;
     }
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
