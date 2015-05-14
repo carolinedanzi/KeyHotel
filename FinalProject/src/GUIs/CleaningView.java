@@ -332,11 +332,6 @@ public class CleaningView extends javax.swing.JFrame {
             updateMouseClicked(evt);
         }
     });
-    update.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            updateActionPerformed(evt);
-        }
-    });
 
     jLabel19.setText("Start Time");
 
@@ -445,10 +440,12 @@ public class CleaningView extends javax.swing.JFrame {
             statement.clearParameters();
             if (!insertSSN.getText().isEmpty()
                     && !insertRmNum.getText().isEmpty()
+                    && !insertDate.getText().isEmpty()
+                    && !insertSTime.getText().isEmpty()
                     && Integer.parseInt(insertSSN.getText()) > 0
-                    && Integer.parseInt(insertSSN.getText()) < 1000000000 && //checks to see if it is a valid ssn
-                    Integer.parseInt(insertRmNum.getText()) > 0
-                    && Integer.parseInt(insertRmNum.getText()) < 11000) {    //checks to see if it is in a valid room number
+                    && Integer.parseInt(insertSSN.getText()) < 1000000000 //checks to see if it is a valid ssn
+                    && Integer.parseInt(insertRmNum.getText()) > 0
+                    && Integer.parseInt(insertRmNum.getText()) < 11000) { //checks to see if it is in a valid room number
                 statement.setObject(1, insertSSN.getText());
                 statement.setObject(2, insertRmNum.getText());
                 statement.setObject(3, insertDate.getText());
@@ -481,20 +478,16 @@ public class CleaningView extends javax.swing.JFrame {
 
     private void updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateMouseClicked
         if (table.getSelectedRow() >= 0) {
-            String occ = ((String) model.getValueAt(table.getSelectedRow(), 4));
-            occ = occ.toLowerCase().equals("yes") ? "1" : "0";
             String updateQuery = "update cleans set essn = ?, room_no = ?, date = ?, start_time = ?, occupied = ? "
-                    + "where essn = '" + ((String) model.getValueAt(table.getSelectedRow(), 0))
-                    + "' and room_no = " + ((String) model.getValueAt(table.getSelectedRow(), 1))
-                    + " and date = '" + ((String) model.getValueAt(table.getSelectedRow(), 2))
-                    + "' and start_time = " + ((String) model.getValueAt(table.getSelectedRow(), 3))
-                    + " and occupied = " + occ;
+                    + "where essn = ? and room_no = ? and date = ? and start_time = ?";
 
             try {
                 PreparedStatement statement = connection.prepareStatement(updateQuery);
                 statement.clearParameters();
                 if (!updateSSN.getText().isEmpty()
                         && !updateRmNum.getText().isEmpty()
+                        && !updateDate.getText().isEmpty()
+                        && !updateSTime.getText().isEmpty()
                         && Integer.parseInt(updateSSN.getText()) > 0
                         && Integer.parseInt(updateSSN.getText()) < 1000000000 //checks to see if it is a valid ssn
                         && Integer.parseInt(updateRmNum.getText()) > 0
@@ -504,6 +497,9 @@ public class CleaningView extends javax.swing.JFrame {
                     statement.setObject(3, updateDate.getText());
                     statement.setObject(4, updateSTime.getText());
                     statement.setObject(5, updateOccupied.getText().toLowerCase().equals("yes") ? "1" : "0");
+                    statement.setObject(6, ((String) model.getValueAt(table.getSelectedRow(), 0)));
+                    statement.setObject(7, ((String) model.getValueAt(table.getSelectedRow(), 1)));
+                    statement.setObject(8, ((String) model.getValueAt(table.getSelectedRow(), 3)));
                     statement.executeUpdate();
                 } else {
                     JOptionPane.showMessageDialog(null, "There is an error in the most recent scheduling request.");
@@ -669,10 +665,6 @@ public class CleaningView extends javax.swing.JFrame {
             updateOccupied.setText("");
         }
     }//GEN-LAST:event_deleteMouseClicked
-
-    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_updateActionPerformed
 
     final private DefaultTableModel model;
     final private Connection connection;

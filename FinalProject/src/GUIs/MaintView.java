@@ -159,11 +159,6 @@ public class MaintView extends javax.swing.JFrame {
     jLabel3.setText("Room Number");
 
     searchSort.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Request ID Descending", "Request ID Ascending", "Submit Date Descending", "Submit Date Ascending", "SSN Descending", "SSN Ascending", "Room Number Descending", "Room Number Ascending", "Unqiue Item ID Descending", "Unique Item ID Ascending", "Resolution Date Descending", "Resolution Date Ascending" }));
-    searchSort.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            searchSortActionPerformed(evt);
-        }
-    });
 
     jLabel4.setText("Sort By");
 
@@ -175,29 +170,12 @@ public class MaintView extends javax.swing.JFrame {
     });
 
     searchResDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
-    searchResDate.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            searchResDateActionPerformed(evt);
-        }
-    });
 
     jLabel13.setText("Submit Date (yyyy-mm-dd)");
-
-    searchRequestID.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            searchRequestIDActionPerformed(evt);
-        }
-    });
 
     jLabel15.setText("Request ID#");
 
     jLabel17.setText("Unique Item ID");
-
-    searchItemID.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            searchItemIDActionPerformed(evt);
-        }
-    });
 
     jLabel20.setText("Description");
 
@@ -295,29 +273,12 @@ public class MaintView extends javax.swing.JFrame {
             scheduleMouseClicked(evt);
         }
     });
-    schedule.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            scheduleActionPerformed(evt);
-        }
-    });
 
     jLabel6.setText("SSN");
 
     jLabel7.setText("Room Number");
 
     jLabel22.setText("Request ID#");
-
-    insertRequestID.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            insertRequestIDActionPerformed(evt);
-        }
-    });
-
-    insertItemID.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            insertItemIDActionPerformed(evt);
-        }
-    });
 
     jLabel23.setText("Unique Item ID");
 
@@ -326,11 +287,6 @@ public class MaintView extends javax.swing.JFrame {
     jLabel12.setText("Resolution Date (yyyy-mm-dd)");
 
     insertResDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
-    insertResDate.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            insertResDateActionPerformed(evt);
-        }
-    });
 
     insertDescr.setColumns(20);
     insertDescr.setRows(5);
@@ -428,32 +384,15 @@ public class MaintView extends javax.swing.JFrame {
         }
     });
 
-    updateRequestID.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            updateRequestIDActionPerformed(evt);
-        }
-    });
-
     jLabel25.setText("Request ID#");
 
     jLabel26.setText("Unique Item ID");
-
-    updateItemID.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            updateItemIDActionPerformed(evt);
-        }
-    });
 
     jLabel16.setText("Submit Date (yyyy-mm-dd)");
 
     jLabel18.setText("Resolution Date (yyyy-mm-dd)");
 
     updateResDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
-    updateResDate.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            updateResDateActionPerformed(evt);
-        }
-    });
 
     jLabel27.setText("Description");
 
@@ -566,52 +505,6 @@ public class MaintView extends javax.swing.JFrame {
     pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void scheduleMouseClicked(java.awt.event.MouseEvent evt) {
-        String insertQuery = "insert into maint_request(request_id, essn, rm_no, uniq_item_id, "
-                + "descr, submittalDate, resolutionDate) values (?, ?, ?, ?, ?, ?, ?)";
-        try {
-            PreparedStatement statement = connection.prepareStatement(insertQuery);
-            statement.clearParameters();
-            if (!insertSSN.getText().isEmpty()
-                    && !insertRmNum.getText().isEmpty()
-                    && !insertRequestID.getText().isEmpty()
-                    && !insertItemID.getText().isEmpty()
-                    && Integer.parseInt(insertSSN.getText()) > 0
-                    && Integer.parseInt(insertSSN.getText()) < 1000000000 && //checks to see if it is a valid ssn
-                    Integer.parseInt(insertRmNum.getText()) > 0
-                    && Integer.parseInt(insertRmNum.getText()) < 11000 && //checks to see if it is a valid room
-                    Integer.parseInt(insertRequestID.getText()) > 0
-                    && Integer.parseInt(insertRequestID.getText()) < 100000 && //checks to see if it is a valid request id from 1-999999
-                    Integer.parseInt(insertItemID.getText()) > 0
-                    && Integer.parseInt(insertItemID.getText()) < 10000) {          //checks to see if it is a valid itemid from 1-9999
-                statement.setObject(1, insertRequestID.getText());
-                statement.setObject(2, insertSSN.getText());
-                statement.setObject(3, insertRmNum.getText());
-                statement.setObject(4, insertItemID.getText());
-                statement.setObject(5, insertDescr.getText());
-                statement.setObject(6, insertSubDate.getText());
-                statement.setObject(7, insertResDate.getText());
-
-                statement.executeUpdate();
-            } else {
-                JOptionPane.showMessageDialog(null, "There is an error in the most recent scheduling request.");
-            }
-
-            String query = "select * from maint_request";
-            statement = connection.prepareStatement(query);
-            setTableData(statement.executeQuery());
-        } catch (SQLException ex) {
-            Logger.getLogger(CleaningView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        insertRequestID.setText("");
-        insertSSN.setText("");
-        insertRmNum.setText("");
-        insertItemID.setText("");
-        insertDescr.setText("");
-        insertSubDate.setText("");
-        insertResDate.setText("");
-    }
-
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
         updateRequestID.setText((String) model.getValueAt(table.getSelectedRow(), 0));
         updateSSN.setText((String) model.getValueAt(table.getSelectedRow(), 1));
@@ -655,13 +548,6 @@ public class MaintView extends javax.swing.JFrame {
         searchSubDate.setText("");
     }//GEN-LAST:event_refreshMouseClicked
 
-    /**
-     * It wouldn't let me delete...
-    private void scheduleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduleMouseClicked
-
-    }//GEN-LAST:event_scheduleMouseClicked
-*
-     */
 
     private void updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateMouseClicked
         if (table.getSelectedRow() >= 0) {
@@ -746,6 +632,52 @@ public class MaintView extends javax.swing.JFrame {
             updateResDate.setText("");
         }
     }//GEN-LAST:event_deleteMouseClicked
+
+    private void scheduleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduleMouseClicked
+String insertQuery = "insert into maint_request(request_id, essn, rm_no, uniq_item_id, "
+                + "descr, submittalDate, resolutionDate) values (?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(insertQuery);
+            statement.clearParameters();
+            if (!insertSSN.getText().isEmpty()
+                    && !insertRmNum.getText().isEmpty()
+                    && !insertRequestID.getText().isEmpty()
+                    && !insertItemID.getText().isEmpty()
+                    && Integer.parseInt(insertSSN.getText()) > 0
+                    && Integer.parseInt(insertSSN.getText()) < 1000000000 && //checks to see if it is a valid ssn
+                    Integer.parseInt(insertRmNum.getText()) > 0
+                    && Integer.parseInt(insertRmNum.getText()) < 11000 && //checks to see if it is a valid room
+                    Integer.parseInt(insertRequestID.getText()) > 0
+                    && Integer.parseInt(insertRequestID.getText()) < 100000 && //checks to see if it is a valid request id from 1-999999
+                    Integer.parseInt(insertItemID.getText()) > 0
+                    && Integer.parseInt(insertItemID.getText()) < 10000) {          //checks to see if it is a valid itemid from 1-9999
+                statement.setObject(1, insertRequestID.getText());
+                statement.setObject(2, insertSSN.getText());
+                statement.setObject(3, insertRmNum.getText());
+                statement.setObject(4, insertItemID.getText());
+                statement.setObject(5, insertDescr.getText());
+                statement.setObject(6, insertSubDate.getText());
+                statement.setObject(7, insertResDate.getText());
+
+                statement.executeUpdate();
+            } else {
+                JOptionPane.showMessageDialog(null, "There is an error in the most recent scheduling request.");
+            }
+
+            String query = "select * from maint_request order by request_id DESC";
+            statement = connection.prepareStatement(query);
+            setTableData(statement.executeQuery());
+        } catch (SQLException ex) {
+            Logger.getLogger(CleaningView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        insertRequestID.setText("");
+        insertSSN.setText("");
+        insertRmNum.setText("");
+        insertItemID.setText("");
+        insertDescr.setText("");
+        insertSubDate.setText("");
+        insertResDate.setText("");
+    }//GEN-LAST:event_scheduleMouseClicked
 
     final private DefaultTableModel model;
     final private Connection connection;
@@ -836,50 +768,6 @@ public class MaintView extends javax.swing.JFrame {
         return query;
     }
 
-
-    private void searchRequestIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchRequestIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchRequestIDActionPerformed
-
-    private void searchItemIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchItemIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchItemIDActionPerformed
-
-    private void searchResDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchResDateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchResDateActionPerformed
-
-    private void insertRequestIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertRequestIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_insertRequestIDActionPerformed
-
-    private void insertItemIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertItemIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_insertItemIDActionPerformed
-
-    private void insertResDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertResDateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_insertResDateActionPerformed
-
-    private void updateRequestIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateRequestIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_updateRequestIDActionPerformed
-
-    private void updateItemIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateItemIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_updateItemIDActionPerformed
-
-    private void updateResDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateResDateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_updateResDateActionPerformed
-
-    private void searchSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSortActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchSortActionPerformed
-
-    private void scheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scheduleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_scheduleActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
